@@ -6,7 +6,3 @@
 ```bash
 docker run --name db -e POSTGRES_PASSWORD=YOUR_PASSWORD -d postgres
 ```
-
-Keep reading
-- https://aranair.github.io/posts/2016/04/27/golang-docker-postgres-digital-ocean/
-- https://www.digitalocean.com/community/tutorials/how-to-deploy-a-clojure-web-application-on-ubuntu-14-04
