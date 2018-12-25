@@ -5,12 +5,37 @@
 ```bash
 lein new luminus public-radio-services +service +postgres
 ```
+
 - create local dev postgres db:
 ```bash
 docker pull postgres && \
 docker run -d -p 5432:5432 --rm \
   --name public-radio-services-db \
   postgres
+```
+
+- to test standalone JAR locally:
+```bash
+lein uberjar
+export DATABASE_URL=postgresql://localhost/postgres?user=postgres
+java -jar target/uberjar/public-radio-services.jar
+# in another terminal window
+tail -f log/public-radio-services.log
+```
+
+- to test Docker locally:
+```bash
+lein uberjar
+docker build -t public-radio-services .
+docker run \
+  --name public-radio-services-run \
+  -e DATABASE_URL=postgresql://localhost/postgres?user=postgres \
+  -p 3000:3000 \
+  --link public-radio-services-db \
+  -i --rm \
+  public-radio-services
+# in another terminal window  
+docker exec -it public-radio-services-run tail -f log/public-radio-services.log
 ```
 
 ## Deployment
