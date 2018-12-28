@@ -25,7 +25,6 @@
 
 (conman/bind-connection *db* "sql/queries.sql")
 
-
 (extend-protocol jdbc/IResultSetReadColumn
     java.sql.Timestamp
   (result-set-read-column [v _2 _3]
@@ -64,22 +63,28 @@
         (.setObject stmt idx (to-pg-json v))))))
 
 (extend-protocol jdbc/ISQLValue
-    java.util.Date
+  java.util.Date
   (sql-value [v]
     (java.sql.Timestamp. (.getTime v)))
+
   java.time.LocalTime
   (sql-value [v]
     (jt/sql-time v))
+
   java.time.LocalDate
   (sql-value [v]
     (jt/sql-date v))
+
   java.time.LocalDateTime
   (sql-value [v]
     (jt/sql-timestamp v))
+
   java.time.ZonedDateTime
   (sql-value [v]
     (jt/sql-timestamp v))
+
   IPersistentMap
   (sql-value [value] (to-pg-json value))
+
   IPersistentVector
   (sql-value [value] (to-pg-json value)))
